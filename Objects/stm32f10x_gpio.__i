@@ -1,0 +1,8 @@
+-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\SYSTEM\delay -I .\SYSTEM\sys -I .\SYSTEM\usart
+-IC:\Users\halleywin\OneDrive\code\C\追光系统\RTE
+-IC:\Users\halleywin\OneDrive\code\C\追光系统\RTE\Device\STM32F103C8
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
+-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\StdPeriph_Driver\inc
+-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD
+-o .\objects\stm32f10x_gpio.o --omf_browse .\objects\stm32f10x_gpio.crf --depend .\objects\stm32f10x_gpio.d "C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\StdPeriph_Driver\src\stm32f10x_gpio.c"
