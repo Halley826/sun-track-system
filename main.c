@@ -1,29 +1,29 @@
 #include "stm32f10x.h"                  // Device header
 #include "stm32f10x_tim.h"              // Keil::Device:StdPeriph Drivers:TIM
 #include "stm32f10x_gpio.h"             // Keil::Device:StdPeriph Drivers:GPIO
-#include "sport.h"//¿ØÖÆĞÅºÅ
-#include "key.h"//×·×Ùµ½´ï¼«ÏŞĞÅºÅ
-#include "timer.h"//pwmÊä³ö
-#include "light.h"//¹âÇ¿ĞÅºÅ
+#include "sport.h"//æ§åˆ¶ä¿¡å·
+#include "key.h"//è¿½è¸ªåˆ°è¾¾æé™ä¿¡å·
+#include "timer.h"//pwmè¾“å‡º
+#include "light.h"//å…‰å¼ºä¿¡å·
 #include "stm32f10x_usart.h"            // Keil::Device:StdPeriph Drivers:USART
-#include "usart.h"//gprsÍ¨ĞÅ£¨ÓëlcdÍ¨ĞÅ»¹Ã»ÓĞÍê³É£©
-#include "stdio.h"//Ïà¹Øc¿â
+#include "usart.h"//gprsé€šä¿¡ï¼ˆä¸lcdé€šä¿¡è¿˜æ²¡æœ‰å®Œæˆï¼‰
+#include "stdio.h"//ç›¸å…³cåº“
 #include "stm32f10x_exti.h"             // Keil::Device:StdPeriph Drivers:EXTI
-#include "exit.h"//ÖĞ¶Ï
-#include <string.h>//×Ö·û´®
-#include "delay.h"//ÑÓÊ±
+#include "exit.h"//ä¸­æ–­
+#include <string.h>//å­—ç¬¦ä¸²
+#include "delay.h"//å»¶æ—¶
 uint16_t temp=0;
-char 	arr[]="check1\0";
-char 	arro[]="start1\0";
-char 	arrwc[]="windcl\0";
-char 	arrsc[]="snowcl\0";//¶¨ÒåµÄ×Ö·û´®
-char 	received[6]="";//ÊÕµ½µÄ×Ö·û´®
+char arr[]="check1\0";
+char arro[]="start1\0";
+char arrwc[]="windcl\0";
+char arrsc[]="snowcl\0";//å®šä¹‰çš„å­—ç¬¦ä¸²
+char received[6]="";//æ”¶åˆ°çš„å­—ç¬¦ä¸²
 char *p=received;
-char 	state_l[]="track system works properly!";
-char 	state_d[]="there are something wrong with track system";
+char state_l[]="track system works properly!";
+char state_d[]="there are something wrong with track system";
 int t=0;
-char flag=1;//×·×Ù×´Ì¬±êÖ¾Î»
-char Gstate=1;//×·×Ù±êÖ¾Î»
+char flag=1;//è¿½è¸ªçŠ¶æ€æ ‡å¿—ä½
+char Gstate=1;//è¿½è¸ªæ ‡å¿—ä½
 //char send[];
 int main()
 {
@@ -34,69 +34,62 @@ Stop();
 Sport_Init();
 Key_Init();
 TIM4_Int_Init();  //500ms
-Light_Init();//³õÊ¼»¯
+Light_Init();//åˆå§‹åŒ–
 TIM4_OC4Structure (900);//5000  PB.9   ENA34  UP&&DOWN
 TIM4_OC3Structure (900);//5000  PB.8    ENA12   LEFT&&RIGHT
-USART1_Config();
+USART1_Config();//ä¸²å£é…ç½®
 	printf("track system has started,instruction:\nstart1\ncheck1\nwindcl\nsnowcl\n");
 	while(1){
-	while(Gstate)//×·×Ù
+	while(Gstate)//è¿½è¸ª
 	{
 
-	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_5)==0)//×óÃæ¹âÇ¿
-	{
+	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_5)==0)//å·¦é¢å…‰å¼º
+		{
 		temp++;
- Left ();
+ 		Left ();//æœç€å·¦ä¾§å…‰å¼ºçš„åœ°æ–¹è¿åŠ¨
 		flag=0;
 
-	}
+		}
 	Stop();
-		while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_5)==1)//ÓÒÃæ¹âÇ¿
-	{	temp++;
- Right ();
+	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_5)==1)//å³é¢å…‰å¼º
+		{	temp++;
+ 		Right ();//æœç€å³ä¾§å…‰å¼ºçš„åœ°æ–¹è¿åŠ¨
 		flag=0;
 
 	
-	}
+		}
 	Stop();
 
-	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)==1)	//ÉÏÃæ¹âÇ¿²¢ÇÒÃ»ÓĞµ½´ï×·×Ù¼«ÏŞ
-	{
-	temp++;
-		Up();
+	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)==1)	//ä¸Šé¢å…‰å¼ºå¹¶ä¸”æ²¡æœ‰åˆ°è¾¾è¿½è¸ªæé™
+		{
+		temp++;
+		Up();//æœç€ä¸Šä¾§å…‰å¼ºçš„åœ°æ–¹è¿åŠ¨
 		flag=0;
 
 	
-} Stop();
+		} Stop();
 
 
-			while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)==1)//ÏÂÃæ¹âÇ¿²¢ÇÒÃ»ÓĞµ½´ï¼«ÏŞ
-			{ 
-					temp++;
-				Down ();
-				flag=0;
-
-
+	while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)==1&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0&&GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)==1)//ä¸‹é¢å…‰å¼ºå¹¶ä¸”æ²¡æœ‰åˆ°è¾¾æé™
+		{ 
+		temp++;
+		Down ();
+		flag=0;
+		}
+	Stop();
+	flag=1;//è¿½è¸ªçŠ¶æ€æ ‡å¿—ä½
 	}
-		Stop();
-flag=1;
+	}
+	}
 
 
-
-	
-}
-}
-
-}
-
-
-void USART1_IRQHandler()//GPRS´®¿ÚÖĞ¶Ï·şÎñ³ÌĞò
+void USART1_IRQHandler()//GPRSä¸²å£ä¸­æ–­æœåŠ¡ç¨‹åº
 {
 
 if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET)
 {
 
-	if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET) 
+	if(USART_GetITStatus(USART1,USART_IT_RXNE)==SET) //æ¥å—æŒ‡ä»¤
 		{
 			if(t==5)
 			{
@@ -105,18 +98,18 @@ if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET)
 		
 				t=0;
 				
-				if(strncmp(arr,received,6)==0)//ÅĞ¶ÏÊÇ²»ÊÇ²éÑ¯×´Ì¬
+				if(strncmp(arr,received,6)==0)//åˆ¤æ–­æ˜¯ä¸æ˜¯æŸ¥è¯¢çŠ¶æ€
 				{
-					if(flag==1)//Õı³£×·×Ù
+					if(flag==1)//æ­£å¸¸è¿½è¸ª
 					printf("Result:\nID:0001\nRete of work:20.123w\nstate:%s",state_l);//
-					else  //×·×Ù²»Õı³£
+					else  //è¿½è¸ªä¸æ­£å¸¸
 						printf("Result:\nID:0001\nRete of work:20.134w\nstate:%s",state_d);
 			delay_nms(100);
 				
 				}
 				
 			else 
-				if (strncmp(arrwc,received,6)==0)//´ó·ç¹Ø±Õ
+				if (strncmp(arrwc,received,6)==0)//å¤§é£å…³é—­
 				{  	Gstate=0;
 					
 							while(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)==1)
