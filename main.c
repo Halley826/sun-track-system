@@ -29,7 +29,7 @@ int main()
 {
 	
 //DMA_Config ();
-	NVIC_Config( );
+NVIC_Config( );
 Stop();
 Sport_Init();
 Key_Init();
