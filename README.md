@@ -85,3 +85,12 @@
 
 ![image-20211201203110505](https://raw.githubusercontent.com/Halley826/Images/main/202112012035859.png?token=AWCL7MPATD33AZS6YO6ROWTBU5WG2)
 
+---
+## 相关的接线
+
+in1&&in2》》》》out1 and 2 ； 水平方位   A4&&A5   
+in3&&in4》》》》out3 and 4 ； 垂直方位   A6&&A7  （A0&&A1） 
+//USART_SendData(USART1,'S');
+	//printf("%s",arr);
+A9----TX
+A10----RX
