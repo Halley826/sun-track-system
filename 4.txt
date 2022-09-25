@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-master
-=======
-feature/fixbug
->>>>>>> feature/fixbug
