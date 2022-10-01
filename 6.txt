@@ -1,4 +1,0 @@
-这是第1行，通过master添加，通过master修改
-这是第2行，通过master添加，通过masrer修改
-这是第3行，通过master添加
-这是第4行，通过master添加，fix 分支修改
